@@ -1,0 +1,31 @@
+#include <Wire.h>
+#include <TFT_eSPI.h>
+
+#define CARDKB_ADDR 0x5F
+
+
+TFT_eSPI tft = TFT_eSPI();
+
+void setup()
+{
+  tft.init();
+  tft.setRotation(3);
+  Wire.begin(32,33);  
+  tft.fillScreen(ILI9341_BLACK); 
+  tft.setCursor(0, 0);
+  tft.setTextColor(ILI9341_WHITE);
+  tft.setTextSize(3);
+}
+
+void loop()
+{
+  Wire.requestFrom(CARDKB_ADDR, 1);
+  while (Wire.available())
+  {
+    char c = Wire.read(); 
+    if (c != 0)
+    {
+      tft.print(c);
+    }
+  }
+}
